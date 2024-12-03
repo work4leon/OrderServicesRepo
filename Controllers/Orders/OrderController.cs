@@ -21,10 +21,12 @@ namespace OrderService.Controllers.Orders
             Context = context;
             _mediator = mediator;
         }
-
+        [HttpGet("api/order/get")]
+        public async Task<ActionResult<List<Order>>> List(Guid OrderId)
+          => Ok(await _mediator.Send(new ListOrderRequest()));
 
         [HttpGet("api/order/{OrderId}get")]
-        public async Task<ActionResult<List<Order>>> Get(Guid OrderId)
+        public async Task<ActionResult<Order>> Get(Guid OrderId)
            => Ok(await _mediator.Send(new GetOrderRequest(OrderId)));
 
         [HttpPost("api/order/create")]

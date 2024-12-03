@@ -5,12 +5,12 @@ using OrderService.Domain;
 
 namespace OrderService.Controllers.Orders
 {
-    public record OrderRequest(OrderCreateDto createDto) : IRequest<OrderDto>;
+    public record OrderRequest(OrderCreateDto CreateDto) : IRequest<OrderDto>;
     public class CreateOrderHandler(OrderDbContext context, IMapper mapper) : IRequestHandler<OrderRequest, OrderDto>
     {
         public async Task<OrderDto> Handle(OrderRequest request, CancellationToken cancellationToken)
         {
-            var createDto = request.createDto;
+            var createDto = request.CreateDto;
             var customer = mapper.Map<Customer>(createDto.Customer);
             var customerDetails = mapper.Map<CustomerDetail>(createDto.CustomerDetails);
             var orderItems = mapper.Map<List<OrderItem>>(createDto.Items);
@@ -21,7 +21,7 @@ namespace OrderService.Controllers.Orders
             order.AddOrderNo(++orderNo);
 
             context.Orders.Add(order);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             var result = mapper.Map<OrderDto>(order);
             return result;

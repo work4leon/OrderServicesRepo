@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        public Guid OrderId { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         public int OrderNo { get; set; } = default!;
         public Customer Customer = default!;
         public CustomerDetail CustomerDetails = default!;

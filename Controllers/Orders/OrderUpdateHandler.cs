@@ -9,16 +9,10 @@ namespace OrderService.Controllers.Orders
     public record OrderUpdateRequest(Guid OrderId, UpdateOrderDto UpdateDto) : IRequest<OrderDto>;
 
 
-    public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderDto>
+    public class OrderUpdateHandler(OrderDbContext context, IMapper mapper) : IRequestHandler<OrderUpdateRequest, OrderDto>
     {
-        private readonly OrderDbContext _context;
-        private readonly IMapper _mapper;
-
-        public OrderUpdateHandler(OrderDbContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+        private readonly OrderDbContext _context = context;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<OrderDto> Handle(OrderUpdateRequest request, CancellationToken cancellationToken)
         {
@@ -28,7 +22,7 @@ namespace OrderService.Controllers.Orders
 
             var order = _context.Orders
                 .Include(o => o.CustomerDetails)
-                .FirstOrDefault(o => o.OrderId == orderId);
+                .FirstOrDefault(o => o.Id == orderId);
 
             if (order is not null)
             {
