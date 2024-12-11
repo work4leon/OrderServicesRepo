@@ -21,14 +21,14 @@ namespace OrderService.Controllers.Orders
             var addresses = dto.Addresses;
 
             var order = _context.Orders
-                .Include(o => o.CustomerDetails)
+                .Include(o => o.Customer)
                 .FirstOrDefault(o => o.Id == orderId);
 
             if (order is not null)
             {
                 var d = addresses.Select(a => _mapper.Map<AddressInfo>(a)).ToList();
-                order.CustomerDetails.Addresses.Clear();
-                order.CustomerDetails.Addresses.AddRange(d);
+                order.Customer.CustomerDetail.Addresses.Clear();
+                order.Customer.CustomerDetail.Addresses.AddRange(d);
                 _context.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
             }

@@ -3,23 +3,21 @@
     public class Customer
     {
         public CustomerType Type { get; set; }
-        public string FirstName { get; set; } = default!;
-        public string LastName { get; set; } = default!;
-
+        public CustomerDetail CustomerDetail { get; set; } = new();
         private Customer() { }
         public Customer(int type, string firstName, string lastName)
         {
             ArgumentException.ThrowIfNullOrEmpty(firstName);
             ArgumentException.ThrowIfNullOrEmpty(lastName);
             Type = (CustomerType)type;
-            FirstName = firstName;
-            LastName = lastName;
+            CustomerDetail.FirstName = firstName;
+            CustomerDetail.LastName = lastName;
         }
     }
 
     public enum CustomerType
     {
-        Standart,
+        Regular,
         Premium,
         Vip
     }

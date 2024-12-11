@@ -2,12 +2,13 @@
 using MediatR;
 using OrderService.Contracts;
 using OrderService.Data.Specs;
+using OrderService.Domain;
 using OrderService.Infrastructure;
 
 namespace OrderService.Controllers.Orders
 {
     public record GetOrderRequest(Guid OrderId) : IRequest<OrderDto>;
-    public class GetOrderHandler(OrderRepository repository, IMapper mapper) : IRequestHandler<GetOrderRequest, OrderDto>
+    public class GetOrderHandler(IReadRepository<Order> repository, IMapper mapper) : IRequestHandler<GetOrderRequest, OrderDto>
     {
 
         private readonly IMapper _mapper = mapper;
@@ -20,8 +21,8 @@ namespace OrderService.Controllers.Orders
                  .FirstOrDefaultAsync(o => o.Id == request.OrderId, cancellationToken);
              var result = _mapper.Map<OrderDto>(order);
              return result;*/
-
-            var result = await repository.GetAllOrders(new OrderSpec(request.OrderId));
+            var result = await repository.FirstOrDefaultAsync(new OrderSpec(request.OrderId));
+            // var result = await repository.GetAllOrders(new OrderSpec(request.OrderId));
             return _mapper.Map<OrderDto>(result);
         }
     }

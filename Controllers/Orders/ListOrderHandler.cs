@@ -21,9 +21,10 @@ namespace OrderService.Controllers.Orders
 
         public async Task<List<OrderDto>> Handle(ListOrderRequest request, CancellationToken cancellationToken)
         {
-            var result = await _repository.ListAsync(cancellationToken);
-            var spec = new OrderSpec(Guid.NewGuid());
-            return _mapper.Map<List<OrderDto>>(result);
+            var spec = new OrderSpec();
+            var result = await _repository.ListAsync(spec, cancellationToken);
+            var dto = _mapper.Map<List<OrderDto>>(result);
+            return dto;
         }
     }
 }

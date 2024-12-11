@@ -22,7 +22,7 @@ namespace OrderService.Controllers.Orders
             _mediator = mediator;
         }
         [HttpGet("api/order/get")]
-        public async Task<ActionResult<List<Order>>> List(Guid OrderId)
+        public async Task<ActionResult<List<Order>>> List()
           => Ok(await _mediator.Send(new ListOrderRequest()));
 
         [HttpGet("api/order/{OrderId}get")]

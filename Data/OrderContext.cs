@@ -8,10 +8,14 @@ public class OrderDbContext(DbContextOptions<OrderDbContext> options) : DbContex
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Order>().OwnsOne(
-         order => order.CustomerDetails, x =>
+         order => order.Customer, x =>
             {
                 x.ToJson();
-                x.OwnsMany(details => details.Addresses);
+                x.OwnsOne(details => details.CustomerDetail);
+                x.OwnsOne(x => x.CustomerDetail, x =>
+                {
+                    x.OwnsMany(y => y.Addresses);
+                });
             });
 
         modelBuilder.Entity<Order>().OwnsOne(

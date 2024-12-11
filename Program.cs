@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService;
 using OrderService.Infrastructure;
+using OrderService.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +18,9 @@ builder.Services.AddDbContext<OrderDbContext>(
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdersMarker).Assembly));
 builder.Services.AddScoped(typeof(OrderRepository));
-//builder.Services.AddScoped(typeof(OrderReadRepository<Order>));
-//builder.Services.AddScoped<IReadRepository<Order>, ReadRepository<Order>>();
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+builder.Services.AddScoped<OrderDbInitializer>();
+builder.Services.AddHostedService<DbInitializerJob>();
 
 var app = builder.Build();
 

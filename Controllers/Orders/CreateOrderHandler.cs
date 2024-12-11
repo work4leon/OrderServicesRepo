@@ -17,7 +17,7 @@ namespace OrderService.Controllers.Orders
 
             var orderNo = context.Orders.Count();
 
-            var order = new Order(customer, customerDetails, orderItems);
+            var order = new Order(customer, orderItems);
             order.AddOrderNo(++orderNo);
 
             context.Orders.Add(order);
